@@ -1,0 +1,6 @@
+{
+  "name": "CarePulse - AI Medication Adherence & Patient Platform",
+  "description": "AI-powered medication adherence tracking, family connectivity, adherence risk scoring, and context-aware AI Healthcare Assistant.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

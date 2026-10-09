@@ -1,0 +1,167 @@
+{
+  "entities": {
+    "User": {
+      "collection": "users",
+      "fields": {
+        "id": { "type": "string", "description": "User ID / Firebase UID" },
+        "name": { "type": "string", "description": "Full name" },
+        "email": { "type": "string", "description": "Email address" },
+        "phone": { "type": "string", "description": "Phone number" },
+        "role": { "type": "string", "enum": ["PATIENT", "CAREGIVER", "FAMILY_MEMBER"], "description": "Account role" },
+        "familyInviteCode": { "type": "string", "description": "Unique patient invite code for family connections" },
+        "linkedPatientId": { "type": "string", "description": "Target patient ID if caregiver" },
+        "avatarUrl": { "type": "string", "description": "Profile picture URL" },
+        "accountStatus": { "type": "string", "enum": ["ACTIVE", "INACTIVE", "DEACTIVATED", "DELETED"], "description": "Account status" },
+        "createdAt": { "type": "string", "description": "ISO timestamp" },
+        "updatedAt": { "type": "string", "description": "ISO timestamp" }
+      }
+    },
+    "PatientProfile": {
+      "collection": "patients",
+      "fields": {
+        "id": { "type": "string", "description": "Patient identifier" },
+        "name": { "type": "string", "description": "Patient full name" },
+        "email": { "type": "string", "description": "Patient email" },
+        "phone": { "type": "string", "description": "Patient phone" },
+        "familyInviteCode": { "type": "string", "description": "Active invitation code" },
+        "createdAt": { "type": "string", "description": "ISO timestamp" }
+      }
+    },
+    "Medication": {
+      "collection": "medications",
+      "fields": {
+        "id": { "type": "string", "description": "Medication ID" },
+        "patientId": { "type": "string", "description": "Target patient ID" },
+        "medicineName": { "type": "string", "description": "Name of medicine" },
+        "dosage": { "type": "string", "description": "Dose strength" },
+        "scheduleTimes": { "type": "array", "description": "Scheduled intake times" },
+        "startDate": { "type": "string", "description": "Start date" },
+        "isActive": { "type": "boolean", "description": "Whether currently prescribed" },
+        "instructions": { "type": "string", "description": "Clinical instructions" },
+        "category": { "type": "string", "description": "Medication classification" },
+        "pillColor": { "type": "string", "description": "UI badge color" },
+        "createdAt": { "type": "string", "description": "ISO timestamp" }
+      }
+    },
+    "AdherenceLog": {
+      "collection": "adherenceLogs",
+      "fields": {
+        "id": { "type": "string", "description": "Log ID" },
+        "patientId": { "type": "string", "description": "Patient ID" },
+        "medicationId": { "type": "string", "description": "Medication ID" },
+        "medicineName": { "type": "string", "description": "Medicine name" },
+        "dosage": { "type": "string", "description": "Dosage" },
+        "scheduledTime": { "type": "string", "description": "Scheduled time" },
+        "scheduledDate": { "type": "string", "description": "Scheduled date" },
+        "status": { "type": "string", "enum": ["TAKEN", "MISSED", "PENDING", "UPCOMING"], "description": "Adherence status" },
+        "takenAt": { "type": "string", "description": "Exact timestamp when marked taken" },
+        "createdAt": { "type": "string", "description": "ISO timestamp" }
+      }
+    },
+    "Symptom": {
+      "collection": "symptoms",
+      "fields": {
+        "id": { "type": "string", "description": "Symptom ID" },
+        "patientId": { "type": "string", "description": "Patient ID" },
+        "symptomText": { "type": "string", "description": "Description of symptom" },
+        "severity": { "type": "string", "enum": ["mild", "moderate", "severe"], "description": "Severity level" },
+        "notes": { "type": "string", "description": "Additional notes" },
+        "date": { "type": "string", "description": "Logged date" },
+        "createdAt": { "type": "string", "description": "ISO timestamp" }
+      }
+    },
+    "FamilyConnection": {
+      "collection": "familyConnections",
+      "fields": {
+        "id": { "type": "string", "description": "Connection ID" },
+        "patientId": { "type": "string", "description": "Patient ID" },
+        "patientName": { "type": "string", "description": "Patient Name" },
+        "caregiverId": { "type": "string", "description": "Caregiver User ID" },
+        "caregiverName": { "type": "string", "description": "Caregiver Name" },
+        "caregiverEmail": { "type": "string", "description": "Caregiver Email" },
+        "relationship": { "type": "string", "description": "Relationship type" },
+        "permissions": { "type": "object", "description": "Granular patient data permissions" },
+        "status": { "type": "string", "enum": ["ACTIVE", "REVOKED", "PENDING"], "description": "Connection status" },
+        "createdAt": { "type": "string", "description": "ISO timestamp" }
+      }
+    },
+    "Invitation": {
+      "collection": "invitations",
+      "fields": {
+        "id": { "type": "string", "description": "Invitation ID" },
+        "code": { "type": "string", "description": "6-character invite code (e.g. CP-KA7T-QPMR or A7K9P2)" },
+        "patientId": { "type": "string", "description": "Patient ID creating the invite" },
+        "patientName": { "type": "string", "description": "Patient full name" },
+        "createdBy": { "type": "string", "description": "Creator User ID" },
+        "status": { "type": "string", "enum": ["ACTIVE", "USED", "EXPIRED", "REVOKED"], "description": "Invite status" },
+        "targetRole": { "type": "string", "default": "CAREGIVER", "description": "Target role" },
+        "createdAt": { "type": "string", "description": "ISO timestamp" },
+        "expiresAt": { "type": "string", "description": "ISO timestamp" },
+        "acceptedBy": { "type": "string", "description": "Caregiver UID who redeemed code" },
+        "acceptedAt": { "type": "string", "description": "ISO timestamp" }
+      }
+    },
+    "Notification": {
+      "collection": "notifications",
+      "fields": {
+        "id": { "type": "string", "description": "Notification ID" },
+        "targetUserId": { "type": "string", "description": "Recipient User ID" },
+        "patientId": { "type": "string", "description": "Patient ID" },
+        "type": { "type": "string", "enum": ["MEDICATION_REMINDER", "MISSED_DOSE", "FAMILY_ALERT", "SECURITY_ALERT", "AI_INSIGHT"], "description": "Notification type" },
+        "title": { "type": "string", "description": "Alert title" },
+        "message": { "type": "string", "description": "Alert message body" },
+        "whyTriggered": { "type": "string", "description": "Clinical/system explanation" },
+        "isRead": { "type": "boolean", "description": "Read status" },
+        "deliveryStatus": { "type": "string", "enum": ["DELIVERED_FCM", "DELIVERED_IN_APP", "PENDING", "FAILED"], "description": "FCM delivery status" },
+        "fcmMessageId": { "type": "string", "description": "Firebase Cloud Messaging reference ID" },
+        "targetDevice": { "type": "string", "description": "Target device name" },
+        "createdAt": { "type": "string", "description": "ISO timestamp" }
+      }
+    },
+    "LoginHistory": {
+      "collection": "loginHistory",
+      "fields": {
+        "id": { "type": "string", "description": "Event ID" },
+        "userId": { "type": "string", "description": "User ID" },
+        "timestamp": { "type": "string", "description": "ISO timestamp" },
+        "authMethod": { "type": "string", "description": "Method used (Email+Password, Google, Phone OTP)" },
+        "deviceName": { "type": "string", "description": "Device name" },
+        "browser": { "type": "string", "description": "Browser name" },
+        "os": { "type": "string", "description": "Operating system" },
+        "ipAddress": { "type": "string", "description": "IP Address" },
+        "location": { "type": "string", "description": "Approximate location" },
+        "status": { "type": "string", "enum": ["SUCCESS", "FAILED"], "description": "Login outcome" }
+      }
+    },
+    "ActiveDevice": {
+      "collection": "activeDevices",
+      "fields": {
+        "id": { "type": "string", "description": "Device session ID" },
+        "userId": { "type": "string", "description": "User ID" },
+        "deviceName": { "type": "string", "description": "Hardware device name" },
+        "deviceType": { "type": "string", "enum": ["DESKTOP", "MOBILE", "TABLET"], "description": "Device category" },
+        "browser": { "type": "string", "description": "Browser version" },
+        "os": { "type": "string", "description": "Operating system" },
+        "ipAddress": { "type": "string", "description": "IP address" },
+        "location": { "type": "string", "description": "Geo location" },
+        "lastActive": { "type": "string", "description": "Last activity timestamp" },
+        "isCurrent": { "type": "boolean", "description": "Whether this is the current active session" },
+        "fcmToken": { "type": "string", "description": "FCM device push token" },
+        "status": { "type": "string", "enum": ["ACTIVE", "REVOKED"], "description": "Device session status" }
+      }
+    },
+    "SecurityEvent": {
+      "collection": "securityEvents",
+      "fields": {
+        "id": { "type": "string", "description": "Security event ID" },
+        "userId": { "type": "string", "description": "Target User ID" },
+        "eventType": { "type": "string", "description": "Event classification" },
+        "severity": { "type": "string", "enum": ["LOW", "MEDIUM", "HIGH", "CRITICAL"], "description": "Severity level" },
+        "title": { "type": "string", "description": "Event title" },
+        "description": { "type": "string", "description": "Detailed explanation" },
+        "timestamp": { "type": "string", "description": "ISO timestamp" },
+        "resolved": { "type": "boolean", "description": "Resolution status" }
+      }
+    }
+  }
+}
